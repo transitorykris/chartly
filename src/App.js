@@ -5,7 +5,6 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <p>Chartly</p>
         <Streamer />
       </div>
     );
