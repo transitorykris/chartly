@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { VictoryChart, VictoryLine, VictoryAxis } from 'victory'
+import { VictoryChart, VictoryBar, VictoryAxis } from 'victory'
 
 const chartStyle = {
   labels: {fontSize: 12},
@@ -8,18 +8,26 @@ const chartStyle = {
 
 const lightGreen500 = "#8BC34A";
 const deepOrange600 = "#F4511E";
+const lightGrey = "#D3D3D3";
 
 const posLineStyle = {
   data: {
     strokeWidth: 2,
-    stroke: lightGreen500,
+    fill: lightGreen500,
   },
 }
 
 const negLineStyle = {
   data: {
     strokeWidth: 2,
-    stroke: deepOrange600,
+    fill: deepOrange600,
+  },
+}
+
+const zeroLineStyle = {
+  data: {
+    strokeWidth: 8,
+    stroke: lightGrey,
   },
 }
 
@@ -29,6 +37,7 @@ export default class Streamer extends Component {
     this.state = {
       posData: [{time: Date.now(), score: 0}],
       negData: [{time: Date.now(), score: 0}],
+      zeroData: [{time: Date.now(), score: 0}],
     }
   }
   setUp() {
@@ -47,6 +56,10 @@ export default class Streamer extends Component {
         let data = that.state.negData
         data.push({time: Date.now(), score: event.Score})
         that.setState({negData: data})
+      } else {
+        let data = that.state.zeroData
+        data.push({time: Date.now(), score: event.Score})
+        that.setState({zeroData: data})
       }
       console.log(event)
     }
@@ -66,8 +79,9 @@ export default class Streamer extends Component {
   render() {
     return (
       <VictoryChart style={chartStyle}>
-        <VictoryLine style={posLineStyle} data={this.state.posData} x="time" y="score" />
-        <VictoryLine style={negLineStyle} data={this.state.negData} x="time" y="score" />
+        <VictoryBar style={posLineStyle} data={this.state.posData} x="time" y="score" />
+        <VictoryBar style={negLineStyle} data={this.state.negData} x="time" y="score" />
+        <VictoryBar style={zeroLineStyle} data={this.state.zeroData} x="time" y="score" />
         <VictoryAxis style={{tickLabels: {fontSize: 0}}} label="" tickValues={[]} />
         <VictoryAxis dependentAxis label="Score" tickValues={[-8, -6, -4, -2, 2, 4, 6, 8]} />
       </VictoryChart>
