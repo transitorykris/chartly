@@ -43,7 +43,7 @@ export default class Streamer extends Component {
         let data = that.state.posData
         data.push({time: Date.now(), score: event.Score})
         that.setState({posData: data})
-      } else {
+      } else if (event.Score < 0) {
         let data = that.state.negData
         data.push({time: Date.now(), score: event.Score})
         that.setState({negData: data})
